@@ -21,6 +21,7 @@ from counter import views as counter_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("health_check/", backend_views.health_check_view),
     path("source/", backend_views.source_view),
     path("counter/", counter_views.counter_view),
 ]
