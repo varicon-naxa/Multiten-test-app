@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  main_worker:
+    image: $IMAGE_NAME:$IMAGE_ID
+    restart: always
+    container_name: main_worker
+    command: "celery -A backend worker -l DEBUG"
+    env_file:
+      - .env
+
+
+  first_worker:
+    image: $IMAGE_NAME:$IMAGE_ID
+    restart: always
+    container_name: first_worker
+    command: "celery -A backend worker -Q first -l DEBUG"
+    env_file:
+      - .env
+
+
+  last_worker:
+    image: $IMAGE_NAME:$IMAGE_ID
+    restart: always
+    container_name: last_worker
+    command: "celery -A backend worker -Q last -l DEBUG"
+    env_file:
+      - .env
