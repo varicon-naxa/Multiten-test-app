@@ -24,4 +24,6 @@ urlpatterns = [
     path("health_check/", backend_views.health_check_view),
     path("source/", backend_views.source_view),
     path("counter/", counter_views.counter_view),
+    path("upload_file/", counter_views.upload_file_view),
+    path("counter_checker/", counter_views.counter_checker_view),
 ]

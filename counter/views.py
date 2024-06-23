@@ -1,7 +1,8 @@
-from django.shortcuts import render
 import socket
 from django.http import HttpResponse
 from .models import Counter
+from time import sleep
+from .tasks import s3_file_uploader, counter_checker
 
 # Create your views here.
 
@@ -24,4 +25,29 @@ def counter_view(request):
             [f"<li>{item}</li>" for item in query]
         )
     )
+    return HttpResponse(html)
+
+
+def upload_file_view(request):
+    filename = request.GET.get("filename")
+    content = request.GET.get("content")
+    s3_file_uploader.delay(filename=filename, content=content)
+    html = f"""
+    <html><body>
+    Uploading in background, file {filename} with content: {content}
+    </body></html>
+    """
+    return HttpResponse(html)
+
+
+def counter_checker_view(request):
+    task = counter_checker.delay()
+    while (task.status != "SUCCESS"):
+        sleep(1)
+    result = task.get()
+    html = f"""
+    <html><body>
+    Got Result from background task: {result}
+    </body></html>
+    """
     return HttpResponse(html)
