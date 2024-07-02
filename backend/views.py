@@ -11,4 +11,4 @@ def source_view(request):
 
 
 def health_check_view(request):
-    return JsonResponse({"health": "ok"})
+    return JsonResponse({"health": "ok v2"})
